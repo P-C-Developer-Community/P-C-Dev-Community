@@ -1,9 +1,9 @@
 Task List
 
 [x] - Create models
-[] - implement auth server
+[x] - implement auth server
 [] - create routes 'to test'
-    [] - auth routes
-    [] - index route
-    [] - project route
-    [] - contributor route
+    [x] - auth routes
+    [x] - index route
+    [x] - project route
+    [x] - contribution route

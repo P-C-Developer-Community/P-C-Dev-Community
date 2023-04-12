@@ -7,3 +7,11 @@ Task List
     [x] - index route
     [x] - project route
     [x] - contribution route
+
+[] - Pages
+    [] - Homepage
+    [] - User profile
+    [] - Sign Up
+    [] - Login 
+    [] - Projects
+    [] - Contributions

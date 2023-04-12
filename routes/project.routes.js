@@ -31,8 +31,7 @@ router.get("/projects/:projectId", (req, res, next) => {
     return;
   }
 
-  // Each Project document has `tasks` array holding `_id`s of Task documents
-  // We use .populate() method to get swap the `_id`s for the actual Task documents
+
   Project.findById(projectId)
     .populate("contributions")
     .then((project) => res.status(200).json(project))

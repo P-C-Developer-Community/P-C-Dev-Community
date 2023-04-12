@@ -15,3 +15,10 @@ Task List
     [] - Login 
     [] - Projects
     [] - Contributions
+
+[] - Components
+    [] - Add Project
+    [] - Add contribution
+    [] - NavBar
+    [] - Is private 
+    [] - Is Anon

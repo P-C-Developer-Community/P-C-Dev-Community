@@ -4,13 +4,13 @@ const mongoose = require("mongoose");
 
 const Project = require("../models/Project.model");
 const Contribution = require("../models/Contribution.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 //  POST /api/projects  -  Creates a new project
-router.post("/projects", (req, res, next) => {
+router.post("/projects",isAuthenticated , (req, res, next) => {
   const { title, description, owner } = req.body;
 
-
-  Project.create({ title, description, projects: [] })
+  Project.create({ title, description, owner: req.payload._id,  projects: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
@@ -18,8 +18,13 @@ router.post("/projects", (req, res, next) => {
 //  GET /api/projects -  Retrieves all of the projects
 router.get("/projects", (req, res, next) => {
   Project.find()
-    // .populate("contributions")
-    .then((allProjects) => res.json(allProjects))
+    .populate("owner")
+    .then((allProjects) =>
+    res.json(allProjects))
+    
+    
+
+    
     .catch((err) => res.json(err));
 });
 

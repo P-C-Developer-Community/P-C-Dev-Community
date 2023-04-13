@@ -5,7 +5,7 @@ const projectSchema = new Schema ({
     title: String,
     description: String,
     // owner: String,
-    owner: [{  type: Schema.Types.ObjectId, ref: `User` }],
+    owner: {  type: Schema.Types.ObjectId, ref: `User` },
     typeOfContribution: {
         type: String, 
         enum: ['time', 'financial']

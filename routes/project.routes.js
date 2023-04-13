@@ -7,9 +7,10 @@ const Contribution = require("../models/Contribution.model");
 
 //  POST /api/projects  -  Creates a new project
 router.post("/projects", (req, res, next) => {
-  const { title, description } = req.body;
+  const { title, description, owner } = req.body;
 
-  Project.create({ title, description, contributions: [] })
+
+  Project.create({ title, description, owner, contributions: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
@@ -17,7 +18,7 @@ router.post("/projects", (req, res, next) => {
 //  GET /api/projects -  Retrieves all of the projects
 router.get("/projects", (req, res, next) => {
   Project.find()
-    .populate("contributions")
+    // .populate("contributions")
     .then((allProjects) => res.json(allProjects))
     .catch((err) => res.json(err));
 });

@@ -5,15 +5,38 @@ const mongoose = require("mongoose");
 const Project = require("../models/Project.model");
 const Contribution = require("../models/Contribution.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const fileUploader = require("../config/cloudinary.config");
+
+
 
 //  POST /api/projects  -  Creates a new project
 router.post("/projects",isAuthenticated , (req, res, next) => {
-  const { title, description, owner } = req.body;
+  const { title, description, owner, imageUrl } = req.body;
 
-  Project.create({ title, description, owner: req.payload._id,  projects: [] })
+console.log("cloudify req body",req.body)
+console.log("img url",imageUrl)
+
+  Project.create({ title, description, owner: req.payload._id, imageUrl })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
+
+
+// POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
+router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
+  // console.log("file is: ", req.file)
+ 
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+  
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+  
+  res.json({ fileUrl: req.file.path });
+});
+
 
 //  GET /api/projects -  Retrieves all of the projects
 router.get("/projects", (req, res, next) => {
@@ -45,7 +68,7 @@ router.get("/projects/:projectId", (req, res, next) => {
 });
 
 // PUT  /api/projects/:projectId  -  Updates a specific project by id
-router.put("/projects/:projectId", (req, res, next) => {
+router.put("/projects/:projectId",isAuthenticated ,  (req, res, next) => {
   const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(projectId)) {
@@ -59,7 +82,7 @@ router.put("/projects/:projectId", (req, res, next) => {
 });
 
 // DELETE  /api/projects/:projectId  -  Deletes a specific project by id
-router.delete("/projects/:projectId", (req, res, next) => {
+router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
   const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(projectId)) {

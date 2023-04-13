@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const Contribution = require("../models/Contribution.model");
 
 //  POST /api/contributions  -  Creates a new contribution
-router.post("/contributions", (req, res, next) => {
+router.post("/contributions", isAuthenticated, (req, res, next) => {
   const { title, description } = req.body;
 
   Contribution.create({ title, description, contributions: [] })
@@ -36,8 +37,8 @@ router.get("/contributions/:contributionId", (req, res, next) => {
 });
 
 // PUT  /api/contributions/:contributionId  -  Updates a specific contribution by id
-router.put("/contributions/:contributionId", (req, res, next) => {
-  const { contributionId } = req.params;
+router.put("/contributions/:contributionId", isAuthenticated, (req, res, next) => {
+  const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(contributionId)) {
     res.status(400).json({ message: "Specified id is not valid" });
@@ -50,7 +51,7 @@ router.put("/contributions/:contributionId", (req, res, next) => {
 });
 
 // DELETE  /api/contributions/:contributionId  -  Deletes a specific contribution by id
-router.delete("/contributions/:contributionId", (req, res, next) => {
+router.delete("/contributions/:contributionId", isAuthenticated, (req, res, next) => {
   const { contributionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(contributionId)) {

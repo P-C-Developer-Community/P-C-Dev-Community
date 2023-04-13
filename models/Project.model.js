@@ -9,7 +9,8 @@ const projectSchema = new Schema ({
     typeOfContribution: {
         type: String, 
         enum: ['time', 'financial']
-    }
+    },
+    imageUrl: String,
 
 });
 

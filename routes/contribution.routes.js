@@ -4,23 +4,23 @@ const mongoose = require("mongoose");
 
 const Contribution = require("../models/Contribution.model");
 
-//  POST /api/projects  -  Creates a new project
+//  POST /api/contributions  -  Creates a new contribution
 router.post("/contributions", (req, res, next) => {
   const { title, description } = req.body;
 
-  Contribution.create({ title, description })
+  Contribution.create({ title, description, contributions: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
 
-//  GET /api/projects -  Retrieves all of the projects
+//  GET /api/contributions -  Retrieves all of the contributions
 router.get("/contributions", (req, res, next) => {
   Contribution.find()
-    .then((allContribution) => res.json(allContributions))
+    .then((allContributions) => res.json(allContributions))
     .catch((err) => res.json(err));
 });
 
-//  GET /api/projects/:projectId -  Retrieves a specific project by id
+//  GET /api/contributions/:contributionId -  Retrieves a specific contribution by id
 router.get("/contributions/:contributionId", (req, res, next) => {
   const { projectId } = req.params;
 
@@ -35,7 +35,7 @@ router.get("/contributions/:contributionId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// PUT  /api/projects/:projectId  -  Updates a specific project by id
+// PUT  /api/contributions/:contributionId  -  Updates a specific contribution by id
 router.put("/contributions/:contributionId", (req, res, next) => {
   const { projectId } = req.params;
 
@@ -49,7 +49,7 @@ router.put("/contributions/:contributionId", (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// DELETE  /api/projects/:projectId  -  Deletes a specific project by id
+// DELETE  /api/contributions/:contributionId  -  Deletes a specific contribution by id
 router.delete("/contributions/:contributionId", (req, res, next) => {
   const { contributionId } = req.params;
 

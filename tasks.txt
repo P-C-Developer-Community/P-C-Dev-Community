@@ -8,17 +8,17 @@ Task List
     [x] - project route
     [x] - contribution route
 
-[] - Pages
-    [] - Homepage
+[x] - Pages
+    [x] - Homepage
     [] - User profile
-    [] - Sign Up
-    [] - Login 
-    [] - Projects
+    [x] - Sign Up
+    [x] - Login 
+    [x] - Projects
     [] - Contributions
 
-[] - Components
-    [] - Add Project
+[x] - Components
+    [x] - Add Project
     [] - Add contribution
-    [] - NavBar
-    [] - Is private 
-    [] - Is Anon
+    [x] - NavBar
+    [x] - Is private 
+    [x] - Is Anon

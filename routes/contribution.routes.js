@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Contribution = require("../models/Contribution.model");
 
 //  POST /api/projects  -  Creates a new project
-router.post("/contribution", (req, res, next) => {
+router.post("/contributions", (req, res, next) => {
   const { title, description } = req.body;
 
   Contribution.create({ title, description })
@@ -14,7 +14,7 @@ router.post("/contribution", (req, res, next) => {
 });
 
 //  GET /api/projects -  Retrieves all of the projects
-router.get("/contribution", (req, res, next) => {
+router.get("/contributions", (req, res, next) => {
   Contribution.find()
     .then((allContribution) => res.json(allContributions))
     .catch((err) => res.json(err));

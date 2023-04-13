@@ -10,7 +10,7 @@ router.post("/projects", (req, res, next) => {
   const { title, description, owner } = req.body;
 
 
-  Project.create({ title, description, owner, contributions: [] })
+  Project.create({ title, description, projects: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
@@ -28,13 +28,13 @@ router.get("/projects/:projectId", (req, res, next) => {
   const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(projectId)) {
-    res.status(400).json({ message: "Specified id is not valid" });
+    res.status(400).json({ message: "Specified Id is not valid" });
     return;
   }
 
 
   Project.findById(projectId)
-    .populate("contributions")
+    
     .then((project) => res.status(200).json(project))
     .catch((error) => res.json(error));
 });
@@ -44,7 +44,7 @@ router.put("/projects/:projectId", (req, res, next) => {
   const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(projectId)) {
-    res.status(400).json({ message: "Specified id is not valid" });
+    res.status(400).json({ message: "Specified Id is not valid" });
     return;
   }
 

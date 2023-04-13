@@ -22,7 +22,7 @@ router.get("/contributions", (req, res, next) => {
 
 //  GET /api/contributions/:contributionId -  Retrieves a specific contribution by id
 router.get("/contributions/:contributionId", (req, res, next) => {
-  const { projectId } = req.params;
+  const { contributionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(contributionId)) {
     res.status(400).json({ message: "Specified id is not valid" });
@@ -31,13 +31,13 @@ router.get("/contributions/:contributionId", (req, res, next) => {
 
 
   Contribution.findById(contributionId)
-    .then((project) => res.status(200).json(contribution))
+    .then((contribution) => res.status(200).json(contribution))
     .catch((error) => res.json(error));
 });
 
 // PUT  /api/contributions/:contributionId  -  Updates a specific contribution by id
 router.put("/contributions/:contributionId", (req, res, next) => {
-  const { projectId } = req.params;
+  const { contributionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(contributionId)) {
     res.status(400).json({ message: "Specified id is not valid" });

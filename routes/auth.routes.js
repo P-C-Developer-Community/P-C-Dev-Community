@@ -124,8 +124,6 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
 
 // GET  /auth/user  -  Used to get user that is logged in details
 router.get("/user", isAuthenticated, (req, res, next) => {
-  console.log("we are here........",req.payload._id)
-
   User.findById(req.payload._id)
   .then((userFromDb) => res.status(200).json(userFromDb))
   .catch((error) => res.json(error))

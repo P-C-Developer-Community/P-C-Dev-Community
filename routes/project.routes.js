@@ -13,9 +13,6 @@ const fileUploader = require("../config/cloudinary.config");
 router.post("/projects",isAuthenticated , (req, res, next) => {
   const { title, description, owner, imageUrl } = req.body;
 
-console.log("cloudify req body",req.body)
-console.log("img url",imageUrl)
-
   Project.create({ title, description, owner: req.payload._id, imageUrl })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));

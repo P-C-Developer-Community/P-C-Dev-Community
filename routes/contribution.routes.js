@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const fileUploader = require("../config/cloudinary.config");
 
 const Contribution = require("../models/Contribution.model");
 
 //  POST /api/contributions  -  Creates a new contribution
 router.post("/contributions", isAuthenticated, (req, res, next) => {
-  const { title, description } = req.body;
+  const { title, description, imageUrl } = req.body;
 
-  Contribution.create({ title, description, contributions: [] })
+  Contribution.create({ title, description, imageUrl, contributions: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });

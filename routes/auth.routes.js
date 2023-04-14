@@ -10,7 +10,7 @@ const saltRounds = 10;
 
 // POST /auth/signup  - Creates a new user in the database
 router.post("/signup", (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, imageUrl } = req.body;
 
   // Check if email or password or name are provided as empty strings
   if (email === "" || password === "" || name === "") {
@@ -50,7 +50,8 @@ router.post("/signup", (req, res, next) => {
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
-      return User.create({ email, password: hashedPassword, name });
+
+      return User.create({ email, password: hashedPassword, name, imageUrl });
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password
@@ -119,5 +120,18 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   // Send back the token payload object containing the user data
   res.status(200).json(req.payload);
 });
+
+
+// GET  /auth/user  -  Used to get user that is logged in details
+router.get("/user", isAuthenticated, (req, res, next) => {
+  console.log("we are here........",req.payload._id)
+
+  User.findById(req.payload._id)
+  .then((userFromDb) => res.status(200).json(userFromDb))
+  .catch((error) => res.json(error))
+  
+});
+
+
 
 module.exports = router;

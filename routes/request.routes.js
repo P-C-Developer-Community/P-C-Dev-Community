@@ -11,8 +11,9 @@ router.post("/requests", isAuthenticated, (req, res, next) => {
 const {message, projectInInterest,  } = req.body
 const owner = req.body.owner._id
 const sender = req.payload._id
+const isRead = false
 
-    Request.create({message, projectInInterest, owner, sender })
+    Request.create({message, projectInInterest, owner, sender, isRead })
       .then((response) => 
       console.log("this is us",response)
     //   res.json(response)
@@ -43,7 +44,32 @@ router.get("/requests", isAuthenticated, (req, res, next) => {
   });
 
 
+  //  GET /api/requests/read -  Changes request status to Read
+router.get("/request/read", isAuthenticated, (req, res, next) => {
 
+    const id = req.query.id;
+   
+    Request.findByIdAndUpdate(id, {isRead: true}, { new: true })
+      .then((updatedResponse) =>{    
+        res.json(filteredMessages)
+      }
+      )
+      .catch((err) => res.json(err));
+  });
+
+
+  //  GET /api/requests/delete -  Delete message
+router.get("/request/delete", isAuthenticated, (req, res, next) => {
+
+    const id = req.query.id;
+   
+    Request.findByIdAndRemove(id)
+      .then((updatedResponse) =>{    
+        res.json(filteredMessages)
+      }
+      )
+      .catch((err) => res.json(err));
+  });
 
 
 

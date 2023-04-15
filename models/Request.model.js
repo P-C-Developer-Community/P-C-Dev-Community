@@ -5,7 +5,8 @@ const requestSchema = new Schema ({
     owner: {  type: Schema.Types.ObjectId, ref: `User` },
     sender: {  type: Schema.Types.ObjectId, ref: `User` },
     projectInInterest: {  type: Schema.Types.ObjectId, ref: `Project` },
-    message: String
+    message: String,
+    isRead: Boolean
 });
 
 module.exports = model("Request", requestSchema);

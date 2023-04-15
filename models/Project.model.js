@@ -10,6 +10,10 @@ const projectSchema = new Schema ({
         type: String, 
         enum: ['time', 'financial']
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
     imageUrl: String,
 
 });

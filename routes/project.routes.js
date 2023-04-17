@@ -100,4 +100,27 @@ router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
+
+router.get("/projects/search", (req, res, next) => {
+  // const { searchValue } = req.params;
+  console.log("thats the body.....",req.body)
+
+
+  // if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    // res.status(400).json({ message: "Specified Id is not valid" });
+    // return;
+  // }
+// 
+// 
+  // Project.findById(projectId)
+    // 
+    // .then((project) => res.status(200).json(project))
+    // .catch((error) => res.json(error));
+});
+
+
+
+
+
+
 module.exports = router;

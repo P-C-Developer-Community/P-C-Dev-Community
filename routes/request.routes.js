@@ -6,17 +6,17 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const Request = require("../models/Request.model.js");
 
 
-//  POST /api/requests  -  Creates a new project
+//  POST /api/requests  -  Creates a new request
 router.post("/requests", isAuthenticated, (req, res, next) => {
 const {message, projectInInterest,  } = req.body
-const owner = req.body.owner._id
+const owner = req.body.owner
 const sender = req.payload._id
 const isRead = false
 
     Request.create({message, projectInInterest, owner, sender, isRead })
-      .then((response) => 
+      .then((response) => {
       console.log("this is us",response)
-    //   res.json(response)
+      res.json(response)}
       )
       .catch((err) => res.json(err));
   });

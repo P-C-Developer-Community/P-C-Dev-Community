@@ -21,7 +21,7 @@ router.post("/projects",isAuthenticated , (req, res, next) => {
 
 // POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
 router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
-  // console.log("file is: ", req.file)
+
  
   if (!req.file) {
     next(new Error("No file uploaded!"));
@@ -81,6 +81,10 @@ router.put("/projects/:projectId",isAuthenticated ,  (req, res, next) => {
 // DELETE  /api/projects/:projectId  -  Deletes a specific project by id
 router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
   const { projectId } = req.params;
+
+  console.log("Deleting project.........")
+
+  
 
   if (!mongoose.Types.ObjectId.isValid(projectId)) {
     res.status(400).json({ message: "Specified id is not valid" });

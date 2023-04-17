@@ -8,14 +8,13 @@ const Request = require("../models/Request.model.js");
 
 //  POST /api/requests  -  Creates a new request
 router.post("/requests", isAuthenticated, (req, res, next) => {
-const {message, projectInInterest,  } = req.body
+const {message, projectInInterest, contributionInInterest  } = req.body
 const owner = req.body.owner
 const sender = req.payload._id
 const isRead = false
 
-    Request.create({message, projectInInterest, owner, sender, isRead })
+    Request.create({message, projectInInterest,contributionInInterest, owner, sender, isRead })
       .then((response) => {
-      console.log("this is us",response)
       res.json(response)}
       )
       .catch((err) => res.json(err));
@@ -25,16 +24,14 @@ const isRead = false
 router.get("/requests", isAuthenticated, (req, res, next) => {
     const sender = req.payload._id
 
-    console.log("we are here yayyyyyy")
     Request.find()
-      .populate(["owner", "sender", "projectInInterest"])
+      .populate(["owner", "sender", "projectInInterest", "contributionInInterest"])
       .then((allRequests) =>{
-        console.log("allRequests",allRequests)
        
         const filteredMessages = allRequests.filter(function(message){
             return (message.owner._id == sender)
         })
-        console.log("filteredMessages....", filteredMessages)
+  
         
         res.json(filteredMessages)
       }

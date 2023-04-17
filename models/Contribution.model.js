@@ -10,7 +10,7 @@ const contributionSchema = new Schema ({
         type: String,
         required: true,
     },
-    creater: [{  type: Schema.Types.ObjectId, ref: `User` }],
+    owner: {  type: Schema.Types.ObjectId, ref: `User` },
     typeOfContribution: {
         type: String, 
         enum: ['time', 'financial']

@@ -10,7 +10,7 @@ const Contribution = require("../models/Contribution.model");
 router.post("/contributions", isAuthenticated, (req, res, next) => {
   const { title, description, imageUrl } = req.body;
 
-  Contribution.create({ title, description, imageUrl, contributions: [] })
+  Contribution.create({ title, description, imageUrl, owner: req.payload._id, contributions: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
@@ -33,13 +33,16 @@ router.get("/contributions/:contributionId", (req, res, next) => {
 
 
   Contribution.findById(contributionId)
-    .then((contribution) => res.status(200).json(contribution))
+  .populate(["owner"])
+    .then((contribution) => {
+      res.status(200).json(contribution)
+    })
     .catch((error) => res.json(error));
 });
 
 // PUT  /api/contributions/:contributionId  -  Updates a specific contribution by id
 router.put("/contributions/:contributionId", isAuthenticated, (req, res, next) => {
-  const { projectId } = req.params;
+  const { contributionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(contributionId)) {
     res.status(400).json({ message: "Specified id is not valid" });

@@ -59,7 +59,7 @@ router.get("/projects/:projectId", (req, res, next) => {
 
 
   Project.findById(projectId)
-    
+  .populate(["owner"])
     .then((project) => res.status(200).json(project))
     .catch((error) => res.json(error));
 });

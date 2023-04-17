@@ -79,7 +79,7 @@ router.put("/projects/:projectId",isAuthenticated ,  (req, res, next) => {
 });
 
 // DELETE  /api/projects/:projectId  -  Deletes a specific project by id
-router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
+router.delete("/projects/:prosjectId",isAuthenticated , (req, res, next) => {
   const { projectId } = req.params;
 
   console.log("Deleting project.........")

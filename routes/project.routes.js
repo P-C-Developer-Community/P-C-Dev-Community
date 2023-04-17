@@ -12,6 +12,8 @@ const fileUploader = require("../config/cloudinary.config");
 //  POST /api/projects  -  Creates a new project
 router.post("/projects",isAuthenticated , (req, res, next) => {
   const { title, description, owner, imageUrl, languages } = req.body;
+console.log("image....image",req.body)
+
 
   Project.create({ title, description, owner: req.payload._id, imageUrl, languages })
     .then((response) => res.json(response))

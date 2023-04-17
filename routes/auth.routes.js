@@ -130,6 +130,15 @@ router.get("/user", isAuthenticated, (req, res, next) => {
   
 });
 
+router.get("/community", isAuthenticated, (req, res, next) => {
+  console.log("printing users")
+  User.find()
+  .then((usersFromDb) => res.status(200).json(usersFromDb))
+  .catch((error) => res.json(error))
+  
+});
+
+
 
 
 module.exports = router;

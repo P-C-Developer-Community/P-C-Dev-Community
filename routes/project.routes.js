@@ -101,9 +101,10 @@ router.delete("/projects/:prosjectId",isAuthenticated , (req, res, next) => {
 });
 
 
-router.get("/projects/search", (req, res, next) => {
-  // const { searchValue } = req.params;
+router.get("/projects/quer/:searchValue", (req, res, next) => {
+  const { searchValue } = req.params;
   console.log("thats the body.....",req.body)
+  console.log("thats the params.....",searchValue)
 
 
   // if (!mongoose.Types.ObjectId.isValid(projectId)) {

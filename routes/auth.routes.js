@@ -12,6 +12,7 @@ const saltRounds = 10;
 router.post("/signup", (req, res, next) => {
   const { email, password, name, imageUrl } = req.body;
 
+
   // Check if email or password or name are provided as empty strings
   if (email === "" || password === "" || name === "") {
     res.status(400).json({ message: "Provide email, password and name" });
@@ -48,15 +49,25 @@ router.post("/signup", (req, res, next) => {
       const salt = bcrypt.genSaltSync(saltRounds);
       const hashedPassword = bcrypt.hashSync(password, salt);
 
+      const defaultSocialMediaValue = "";
+
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
 
-      return User.create({ email, password: hashedPassword, name, imageUrl });
+      return User.create({ email,
+        password: hashedPassword,
+        name,
+        imageUrl,
+        twitter: defaultSocialMediaValue,
+        gitHub: defaultSocialMediaValue,
+        instagram: defaultSocialMediaValue,
+        linkedIn: defaultSocialMediaValue, });
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
-      const { email, name, _id } = createdUser;
+      
+      const { email, name, _id, } = createdUser;
 
       // Create a new object that doesn't expose the password
       const user = { email, name, _id };
@@ -134,6 +145,25 @@ router.get("/community", isAuthenticated, (req, res, next) => {
   console.log("printing users")
   User.find()
   .then((usersFromDb) => res.status(200).json(usersFromDb))
+  .catch((error) => res.json(error))
+  
+});
+
+// PUT /auth/user  -  Used to get user that is logged in details
+router.put("/user/update", isAuthenticated, (req, res, next) => {
+
+// console.log("req.bogy", req.body)
+
+const {gitHub, linkedIn, twitter, instagram} = req.body;
+const updates = {gitHub, linkedIn, twitter, instagram};
+
+  console.log("^^^we are gere at put....", gitHub )
+  User.findByIdAndUpdate(req.payload._id, updates, { new: true })
+  .then((userFromDb) => {
+    console.log("userFromDb",userFromDb)
+    res.status(200).json(userFromDb)
+  }
+  )
   .catch((error) => res.json(error))
   
 });

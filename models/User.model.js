@@ -20,6 +20,10 @@ const userSchema = new Schema(
       required: [true, "Name is required."],
     },
     imageUrl: String,
+    gitHub: String,
+    linkedIn: String,
+    twitter: String,
+    instagram: String,
     
   },
   {

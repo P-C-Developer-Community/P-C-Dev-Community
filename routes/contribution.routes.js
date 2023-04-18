@@ -8,9 +8,9 @@ const Contribution = require("../models/Contribution.model");
 
 //  POST /api/contributions  -  Creates a new contribution
 router.post("/contributions", isAuthenticated, (req, res, next) => {
-  const { title, description, imageUrl } = req.body;
+  const { title, description, imageUrl, languages } = req.body;
 
-  Contribution.create({ title, description, imageUrl, owner: req.payload._id, contributions: [] })
+  Contribution.create({ title, description, imageUrl, owner: req.payload._id, languages, contributions: [] })
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });

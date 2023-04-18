@@ -20,6 +20,7 @@ const contributionSchema = new Schema ({
         default: Date.now,
     },
     imageUrl: String,
+    languages: [String],
 
 });
 

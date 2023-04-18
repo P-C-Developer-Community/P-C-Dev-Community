@@ -8,11 +8,19 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const fileUploader = require("../config/cloudinary.config");
 
 
+console.log("...........")
+console.log(" project.routes ")
+console.log("...........")
 
 //  POST /api/projects  -  Creates a new project
 router.post("/projects",isAuthenticated , (req, res, next) => {
   const { title, description, owner, imageUrl, languages } = req.body;
-console.log("image....image",req.body)
+
+  console.log("...........")
+  console.log(" POST projects... ")
+  console.log("...........")
+
+  console.log("image....image",req.body)
 
 
   Project.create({ title, description, owner: req.payload._id, imageUrl, languages })

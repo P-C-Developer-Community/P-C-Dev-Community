@@ -8,20 +8,9 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const fileUploader = require("../config/cloudinary.config");
 
 
-console.log("...........")
-console.log(" project.routes ")
-console.log("...........")
-
 //  POST /api/projects  -  Creates a new project
 router.post("/projects",isAuthenticated , (req, res, next) => {
   const { title, description, owner, imageUrl, languages } = req.body;
-
-  console.log("...........")
-  console.log(" POST projects... ")
-  console.log("...........")
-
-  console.log("image....image",req.body)
-
 
   Project.create({ title, description, owner: req.payload._id, imageUrl, languages })
     .then((response) => res.json(response))
@@ -59,7 +48,7 @@ router.get("/projects", (req, res, next) => {
 });
 
 //  GET /api/projects/:projectId -  Retrieves a specific project by id
-router.get("/projects/:projectId", (req, res, next) => {
+router.get("/projects/:projectId", isAuthenticated, (req, res, next) => {
   const { projectId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(projectId)) {
@@ -91,10 +80,6 @@ router.put("/projects/:projectId",isAuthenticated ,  (req, res, next) => {
 // DELETE  /api/projects/:projectId  -  Deletes a specific project by id
 router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
   const { projectId } = req.params;
-
-  console.log("Deleting project.........")
-  console.log("projectIdoject.........",req.params)
-
   
 
   if (!mongoose.Types.ObjectId.isValid(projectId)) {
@@ -104,7 +89,6 @@ router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
 
   Project.findByIdAndRemove(projectId)
     .then((response) =>{
-      console.log("response......",response)
       res.json({
         message: `Project with ${projectId} is removed successfully.`,
       })
@@ -118,8 +102,8 @@ router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
 
 router.get("/projects/quer/:searchValue", (req, res, next) => {
   const { searchValue } = req.params;
-  console.log("thats the body.....",req.body)
-  console.log("thats the params.....",searchValue)
+  // console.log("thats the body.....",req.body)
+  // console.log("thats the params.....",searchValue)
 
 
   // if (!mongoose.Types.ObjectId.isValid(projectId)) {

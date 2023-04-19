@@ -142,7 +142,6 @@ router.get("/user", isAuthenticated, (req, res, next) => {
 });
 
 router.get("/community", isAuthenticated, (req, res, next) => {
-  console.log("printing users")
   User.find()
   .then((usersFromDb) => res.status(200).json(usersFromDb))
   .catch((error) => res.json(error))
@@ -152,15 +151,12 @@ router.get("/community", isAuthenticated, (req, res, next) => {
 // PUT /auth/user  -  Used to get user that is logged in details
 router.put("/user/update", isAuthenticated, (req, res, next) => {
 
-// console.log("req.bogy", req.body)
 
 const {gitHub, linkedIn, twitter, instagram} = req.body;
 const updates = {gitHub, linkedIn, twitter, instagram};
 
-  console.log("^^^we are gere at put....", gitHub )
   User.findByIdAndUpdate(req.payload._id, updates, { new: true })
   .then((userFromDb) => {
-    console.log("userFromDb",userFromDb)
     res.status(200).json(userFromDb)
   }
   )

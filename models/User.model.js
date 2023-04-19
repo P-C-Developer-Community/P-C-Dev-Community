@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
+
 const userSchema = new Schema(
   {
     email: {
@@ -24,10 +24,15 @@ const userSchema = new Schema(
     linkedIn: String,
     twitter: String,
     instagram: String,
-    
+    reviews: [{
+      review: String,
+      createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    }]
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );

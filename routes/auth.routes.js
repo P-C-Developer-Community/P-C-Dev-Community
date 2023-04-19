@@ -61,7 +61,8 @@ router.post("/signup", (req, res, next) => {
         twitter: defaultSocialMediaValue,
         gitHub: defaultSocialMediaValue,
         instagram: defaultSocialMediaValue,
-        linkedIn: defaultSocialMediaValue, });
+        linkedIn: defaultSocialMediaValue,
+        reviews: [] });
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password
@@ -143,6 +144,13 @@ router.get("/user", isAuthenticated, (req, res, next) => {
 
 router.get("/community", isAuthenticated, (req, res, next) => {
   User.find()
+  .populate({ 
+    path: 'reviews',
+    populate: {
+      path: 'createdBy', 
+      model: 'User' 
+    }
+  })
   .then((usersFromDb) => res.status(200).json(usersFromDb))
   .catch((error) => res.json(error))
   
@@ -163,6 +171,30 @@ const updates = {gitHub, linkedIn, twitter, instagram};
   .catch((error) => res.json(error))
   
 });
+
+router.put("/user/review", isAuthenticated, (req, res, next) => {
+  const review = req.body.review;
+  const userId = req.body.userId;
+  const createdBy = req.payload._id
+
+  User.findByIdAndUpdate(
+    userId,
+    { $push: { reviews: { review: review, createdBy: createdBy } } },
+    { new: true }
+  )
+  .populate({ 
+    path: 'reviews',
+    populate: {
+      path: 'createdBy', 
+      model: 'User' 
+    }
+  })
+    .then((userFromDb) => {
+      res.status(200).json(userFromDb);
+    })
+    .catch((error) => res.json(error));
+});
+  
 
 
 

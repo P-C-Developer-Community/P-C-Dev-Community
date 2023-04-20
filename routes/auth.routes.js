@@ -61,8 +61,7 @@ router.post("/signup", (req, res, next) => {
         twitter: defaultSocialMediaValue,
         gitHub: defaultSocialMediaValue,
         instagram: defaultSocialMediaValue,
-        linkedIn: defaultSocialMediaValue,
-        reviews: [] });
+        linkedIn: defaultSocialMediaValue, });
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password
@@ -143,14 +142,8 @@ router.get("/user", isAuthenticated, (req, res, next) => {
 });
 
 router.get("/community", isAuthenticated, (req, res, next) => {
+  console.log("printing users")
   User.find()
-  .populate({ 
-    path: 'reviews',
-    populate: {
-      path: 'createdBy', 
-      model: 'User' 
-    }
-  })
   .then((usersFromDb) => res.status(200).json(usersFromDb))
   .catch((error) => res.json(error))
   
@@ -159,42 +152,21 @@ router.get("/community", isAuthenticated, (req, res, next) => {
 // PUT /auth/user  -  Used to get user that is logged in details
 router.put("/user/update", isAuthenticated, (req, res, next) => {
 
+// console.log("req.bogy", req.body)
 
 const {gitHub, linkedIn, twitter, instagram} = req.body;
 const updates = {gitHub, linkedIn, twitter, instagram};
 
+  console.log("^^^we are gere at put....", gitHub )
   User.findByIdAndUpdate(req.payload._id, updates, { new: true })
   .then((userFromDb) => {
+    console.log("userFromDb",userFromDb)
     res.status(200).json(userFromDb)
   }
   )
   .catch((error) => res.json(error))
   
 });
-
-router.put("/user/review", isAuthenticated, (req, res, next) => {
-  const review = req.body.review;
-  const userId = req.body.userId;
-  const createdBy = req.payload._id
-
-  User.findByIdAndUpdate(
-    userId,
-    { $push: { reviews: { review: review, createdBy: createdBy } } },
-    { new: true }
-  )
-  .populate({ 
-    path: 'reviews',
-    populate: {
-      path: 'createdBy', 
-      model: 'User' 
-    }
-  })
-    .then((userFromDb) => {
-      res.status(200).json(userFromDb);
-    })
-    .catch((error) => res.json(error));
-});
-  
 
 
 

@@ -61,7 +61,8 @@ router.post("/signup", (req, res, next) => {
         twitter: defaultSocialMediaValue,
         gitHub: defaultSocialMediaValue,
         instagram: defaultSocialMediaValue,
-        linkedIn: defaultSocialMediaValue, });
+        linkedIn: defaultSocialMediaValue,
+        reviews: [] });
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password

@@ -59,8 +59,6 @@ router.get("/projects/:projectId", isAuthenticated, (req, res, next) => {
 
   Project.findById(projectId)
   .populate(["owner"])
-    .then((project) => res.status(200).json(project))
-  
     .then((project) => {
       console.log(project, "Project.......")
       res.status(200).json(project)})

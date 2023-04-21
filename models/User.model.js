@@ -19,7 +19,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
-    imageUrl: String,
+    imageUrl: {
+      type: String,
+    required: [true, "Image is required."],
+    },
     gitHub: String,
     linkedIn: String,
     twitter: String,
@@ -29,7 +32,8 @@ const userSchema = new Schema(
       createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-      }
+      },
+      createdAt : {type: Date, default: Date.now}
     }]
   },
   {

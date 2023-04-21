@@ -3,7 +3,6 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 const Project = require("../models/Project.model");
-const Contribution = require("../models/Contribution.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const fileUploader = require("../config/cloudinary.config");
 
@@ -33,17 +32,12 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
   res.json({ fileUrl: req.file.path });
 });
 
-
 //  GET /api/projects -  Retrieves all of the projects
 router.get("/projects", (req, res, next) => {
   Project.find()
     .populate("owner")
     .then((allProjects) =>
-    res.json(allProjects))
-    
-    
-
-    
+    res.json(allProjects))    
     .catch((err) => res.json(err));
 });
 
@@ -55,7 +49,6 @@ router.get("/projects/:projectId", isAuthenticated, (req, res, next) => {
     res.status(400).json({ message: "Specified Id is not valid" });
     return;
   }
-
 
   Project.findById(projectId)
   .populate(["owner"])
@@ -94,34 +87,10 @@ router.delete("/projects/:projectId",isAuthenticated , (req, res, next) => {
       res.json({
         message: `Project with ${projectId} is removed successfully.`,
       })
-
     }
-    
     )
     .catch((error) => res.json(error));
 });
-
-
-router.get("/projects/quer/:searchValue", (req, res, next) => {
-  const { searchValue } = req.params;
-  // console.log("thats the body.....",req.body)
-  // console.log("thats the params.....",searchValue)
-
-
-  // if (!mongoose.Types.ObjectId.isValid(projectId)) {
-    // res.status(400).json({ message: "Specified Id is not valid" });
-    // return;
-  // }
-// 
-// 
-  // Project.findById(projectId)
-    // 
-    // .then((project) => res.status(200).json(project))
-    // .catch((error) => res.json(error));
-});
-
-
-
 
 
 

@@ -12,7 +12,6 @@ const saltRounds = 10;
 router.post("/signup", (req, res, next) => {
   const { email, password, name, imageUrl } = req.body;
 
-
   // Check if email or password or name are provided as empty strings
   if (email === "" || password === "" || name === "") {
     res.status(400).json({ message: "Provide email, password and name" });
@@ -54,7 +53,8 @@ router.post("/signup", (req, res, next) => {
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
 
-      return User.create({ email,
+      return User.create({
+        email,
         password: hashedPassword,
         name,
         imageUrl,
@@ -62,13 +62,11 @@ router.post("/signup", (req, res, next) => {
         gitHub: defaultSocialMediaValue,
         instagram: defaultSocialMediaValue,
         linkedIn: defaultSocialMediaValue,
-        reviews: [] });
+        reviews: [],
+      });
     })
     .then((createdUser) => {
-      // Deconstruct the newly created user object to omit the password
-      // We should never expose passwords publicly
-      
-      const { email, name, _id, } = createdUser;
+      const { email, name, _id } = createdUser;
 
       // Create a new object that doesn't expose the password
       const user = { email, name, _id };
@@ -128,75 +126,63 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   // If JWT token is valid the payload gets decoded by the
   // isAuthenticated middleware and is made available on `req.payload`
 
-
   // Send back the token payload object containing the user data
   res.status(200).json(req.payload);
 });
 
-
 // GET  /auth/user  -  Used to get user that is logged in details
 router.get("/user", isAuthenticated, (req, res, next) => {
   User.findById(req.payload._id)
-  .then((userFromDb) => res.status(200).json(userFromDb))
-  .catch((error) => res.json(error))
-  
+    .then((userFromDb) => res.status(200).json(userFromDb))
+    .catch((error) => res.json(error));
 });
 
 router.get("/community", isAuthenticated, (req, res, next) => {
   User.find()
-  .populate({ 
-    path: 'reviews',
-    populate: {
-      path: 'createdBy', 
-      model: 'User' 
-    }
-  })
-  .then((usersFromDb) => res.status(200).json(usersFromDb))
-  .catch((error) => res.json(error))
-  
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "createdBy",
+        model: "User",
+      },
+    })
+    .then((usersFromDb) => res.status(200).json(usersFromDb))
+    .catch((error) => res.json(error));
 });
 
 // PUT /auth/user  -  Used to get user that is logged in details
 router.put("/user/update", isAuthenticated, (req, res, next) => {
-
-
-const {gitHub, linkedIn, twitter, instagram} = req.body;
-const updates = {gitHub, linkedIn, twitter, instagram};
+  const { gitHub, linkedIn, twitter, instagram } = req.body;
+  const updates = { gitHub, linkedIn, twitter, instagram };
 
   User.findByIdAndUpdate(req.payload._id, updates, { new: true })
-  .then((userFromDb) => {
-    res.status(200).json(userFromDb)
-  }
-  )
-  .catch((error) => res.json(error))
-  
+    .then((userFromDb) => {
+      res.status(200).json(userFromDb);
+    })
+    .catch((error) => res.json(error));
 });
 
 router.put("/user/review", isAuthenticated, (req, res, next) => {
   const review = req.body.review;
   const userId = req.body.userId;
-  const createdBy = req.payload._id
+  const createdBy = req.payload._id;
 
   User.findByIdAndUpdate(
     userId,
     { $push: { reviews: { review: review, createdBy: createdBy } } },
     { new: true }
   )
-  .populate({ 
-    path: 'reviews',
-    populate: {
-      path: 'createdBy', 
-      model: 'User' 
-    }
-  })
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "createdBy",
+        model: "User",
+      },
+    })
     .then((userFromDb) => {
       res.status(200).json(userFromDb);
     })
     .catch((error) => res.json(error));
 });
-  
-
-
-
 
 module.exports = router;
